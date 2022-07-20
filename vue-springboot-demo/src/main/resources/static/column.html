@@ -39,7 +39,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取消</el-button>
-            <el-button type="primary" @click="dialogFormVisible = false" @click="save">确定</el-button>
+            <el-button type="primary" @click="save">确定</el-button>
         </div>
     </el-dialog>
     <div class="block">
@@ -74,7 +74,7 @@
             tableData:[],
             dialogTitle:"",
             formData:{
-                id:'',
+                id:-1,
                 name:'',
                 desc:''
             },
@@ -89,6 +89,7 @@
             //这里的pageSize和pageNum参数自动就能传过来
             handleSizeChange:function (pageSize) {
                 this.size = pageSize;
+                this.current = 1;
                 this.loadData();
 
             },
@@ -122,19 +123,50 @@
             add:function () {
                 this.dialogTitle="新增栏目";
                 this.dialogFormVisible = true;
-                this.formData.id = "";
+                this.formData.id = -1;
                 this.formData.name = "";
                 this.formData.desc = "";
-
             },
             save:function () {
-                this.dialogFormVisible = false;
-                this.$message({
-                    type:'success',
-                    showClose:true,
-                    message:"新增成功"
-                })
-                this.loadData();
+                if(this.formData.id==-1) {
+                    axios.post("./column/add", this.formData).then((response) => {
+                        if (response.data.code == 1) {
+                            this.dialogFormVisible = false;
+                            this.$message({
+                                type: 'success',
+                                message: response.data.msg
+                            })
+                            this.loadData();
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                showClose: true,
+                                message: response.data.msg
+                            })
+                        }
+                        this.loadData();
+                    }).catch((error) => {
+                        console.log(error);
+                    })
+                }else{
+                    axios.post("./column/edit",this.formData).then((response)=>{
+                        if(response.data.code == 1){
+                            this.dialogFormVisible = false;
+                            this.$message({
+                                type: 'success',
+                                message: response.data.msg
+                            })
+                            this.loadData();
+                        }else{
+                            this.$message({
+                                type: 'error',
+                                showClose: true,
+                                message: response.data.msg
+                            })
+                        }
+                    }).catch((error)=>console.log(error))
+                }
+
             },
             edit:function (row){
                 this.dialogTitle="编辑栏目";
@@ -142,28 +174,35 @@
                 this.formData.id = row.id;
                 this.formData.name = row.name;
                 this.formData.desc = row.desc;
-                this.loadData();
             },
             del:function (id) {
-                console.log(id)
+                //this.formData.id = id;
                 this.$confirm('确认删除','提示',{
                     type: 'warning'
                 }).then(()=>{
-                    this.$message({
-                        type:'success',
-                        showClose:true,
-                        message:"删除成功"
-                    })
-                    this.loadData();
+                    axios.post("./column/delete",{id:id}).
+                    then((response)=>{
+                        if(response.data.code==1){
+                            this.$message({
+                                type:'success',
+                                message:response.data.msg
+                            })
+                            this.loadData();
+                        }else{
+                            this.$message({
+                                type:'warning',
+                                showClose:true,
+                                message:response.data.msg
+                            })
+                        }
+                    }).catch((error)=>console.log(error));
                 }).catch(()=>{
                     this.$message({
                         type:'info',
                         message:'已取消删除'
                     });
                 });
-
             },
-
         }
     });
 </script>

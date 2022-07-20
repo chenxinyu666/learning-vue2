@@ -25,7 +25,44 @@ public class Data {
         Integer fromIndex = size*(current-1);
         Integer toIndex = (fromIndex + size)<list.size()?(fromIndex + size):list.size();
 
-        List record = data.subList(fromIndex,toIndex);
+        List record = list.subList(fromIndex,toIndex);
         return new Page(current,size,list.size(),record);
     }
+    public static int add(Column column){
+        Integer id = -1;
+        if(data.size()==0){
+            id = 0;
+        }else{
+            id = data.get(data.size()-1).getId()+1;
+        }
+        column.setId(id);
+        try{
+            data.add(column);
+            return 1;
+        }catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    public static int editById(Column column){
+        Integer id = column.getId();
+        for(Column c:data){
+            if((int)c.getId()==(int)id){
+                c.setDesc(column.getDesc());
+                c.setName(column.getName());
+                return 1;
+            }
+        }
+        return -1;
+    }
+    public static int deleteById(Integer id){
+        for(Column c:data){
+            if((int)c.getId()==(int)id){
+                data.remove(c);
+                return 1;
+            }
+        }
+        return -1;
+    }
+
 }

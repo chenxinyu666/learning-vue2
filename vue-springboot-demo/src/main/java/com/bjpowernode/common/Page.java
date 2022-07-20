@@ -1,7 +1,9 @@
 package com.bjpowernode.common;
 
-import java.util.List;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+@Component
 public class Page {
     private Integer current;//当前页
     private Integer size;//每页显示多少条

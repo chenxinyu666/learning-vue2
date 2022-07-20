@@ -13,7 +13,7 @@
             <el-input placeholder="栏目名称" size="small" v-model="searchFormData.name"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button size="small" @click="search">搜索</el-button>
+            <el-button size="small" @click="search" v-model="name">搜索</el-button>
         </el-form-item>
     </el-form>
     <el-button type="primary" size="small" @click="add">新增</el-button>
@@ -21,9 +21,9 @@
         <el-table-column prop="name" label="栏目名称"></el-table-column>
         <el-table-column prop="desc" label="栏目描述"></el-table-column>
         <el-table-column  label="操作">
-            <template scope-slot="scope">
-                <el-button type="primary" size="small" @click="edit(scope.row)">编辑</el-button>
-                <el-button type="primary" size="small" @click="del(scope.row.id)">删除</el-button>
+            <template slot-scope="rowData">
+                <el-button type="primary" size="small" @click="edit(rowData.row)">编辑</el-button>
+                <el-button type="danger" size="small" @click="del(rowData.row.id)">删除</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -31,10 +31,10 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" width="40%">
         <el-form label-position="left" label-width="80px">
             <el-form-item label="栏目名称">
-                <el-input></el-input>
+                <el-input v-model="formData.name"></el-input>
             </el-form-item>
             <el-form-item label="栏目描述">
-                <el-input></el-input>
+                <el-input v-model="formData.desc"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -48,6 +48,7 @@
                 @current-change="handleCurrentChange"
                 :current-page="current"
                 :page-size="size"
+                :page-sizes="[1,5,10,20,50,100]"
                 layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
         </el-pagination>
@@ -67,7 +68,7 @@
         data:{
             dialogFormVisible:false,
             current:1,
-            size:10,
+            size:5,
             total:35,
             name:"",
             tableData:[],
@@ -87,19 +88,17 @@
         methods: {
             //这里的pageSize和pageNum参数自动就能传过来
             handleSizeChange:function (pageSize) {
-                console.log(pageSize);
-
+                this.size = pageSize;
                 this.loadData();
 
             },
             handleCurrentChange:function (pageNum){
-                console.log(pageNum);
-
+                this.current = pageNum;
                 this.loadData();
 
             },
             loadData:function () {
-                axios.get("../page.json",{
+                axios.get("./column",{
                     params:{
                         current:this.current,
                         size:this.size,
@@ -116,6 +115,8 @@
                 })
             },
             search:function (){
+                this.current = 1;
+                this.size = 5;
                 this.loadData();
             },
             add:function () {
@@ -141,6 +142,7 @@
                 this.formData.id = row.id;
                 this.formData.name = row.name;
                 this.formData.desc = row.desc;
+                this.loadData();
             },
             del:function (id) {
                 console.log(id)

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算属性</title>
+</head>
+<body>
+<div id="app">
+    <!--computed属性里的函数的返回值可以通过插值直接显示-->
+    {{upperMsg}}
+    <br>
+    <!--当msg改变时，computed属性里使用了msg的函数会自动重新进行计算-->
+    <input v-model="upperMsg">
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            msg:"hello"
+        },
+        computed:{
+            upperMsg:{
+                get:function (){
+                    //在返回值之前进行处理计算
+                    return this.msg.toUpperCase();
+                },
+                set:function (value) {
+                    //在设置值之前进行处理计算
+                    value = value+"!!";
+                    this.msg = value;
+                }
+            }
+
+        }
+    })
+</script>
+</body>
+</html>

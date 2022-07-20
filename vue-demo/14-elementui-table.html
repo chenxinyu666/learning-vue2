@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表格</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .el-row {
+            margin-bottom: 20px;
+        }
+        .el-col {
+            border-radius: 4px;
+        }
+        .bg-purple-dark {
+            background: #99a9bf;
+        }
+        .bg-purple {
+            background: #d3dce6;
+        }
+        .bg-purple-light {
+            background: #e5e9f2;
+        }
+        .grid-content {
+            border-radius: 4px;
+            min-height: 36px;
+        }
+        .row-bg {
+            padding: 10px 0;
+            background-color: #f9fafc;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+
+    <el-button type="primary">新增</el-button>
+    <el-table :data="tableData">
+        <el-table-column prop="name" label="栏目名称">
+        </el-table-column>
+        <el-table-column prop="desc" label="栏目描述">
+        </el-table-column>
+        <el-table-column label="操作">
+            <template>
+                <el-button @click="openDiaglog(scope.row)" type="primary" size="small">编辑</el-button>
+                <el-button @click="del(scope.row)" type="info" size="small">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+</div>
+
+<!--注意引入顺序-->
+<!--引入vue-->
+<script src="../js/vue.js"></script>
+<!-- 引入ElementUI组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data:{
+
+            tableData: [
+                {
+                  name:"娱乐",
+                  desc:"娱乐新闻"
+                },
+                {
+                    name:"体育",
+                    desc:"体育新闻"
+                },
+            ]
+        }
+    })
+</script>
+</body>
+</html>

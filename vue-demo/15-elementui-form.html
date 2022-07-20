@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>表单</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="app">
+    <!--label-position和label-width设置表单内所有label的位置和宽度-->
+    <!--rules属性设置表单验证采用哪个规则-->
+    <!--ref属性定义了其他标签使用表单数据时，应该引用什么名称-->
+    <el-form :model="formData" ref="activityForm" label-position="left" label-width="80px" :rules="rules">
+        <!--prop属性的值决定了表单验证时对应的哪个验证规则-->
+        <el-form-item label="活动名称" prop="name">
+            <el-input v-model="formData.name" placeholder="请确认活动名称"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域" prop="area">
+            <el-select v-model="formData.area" placeholder="请选择活动区域">
+                <!--el-option的标签显示由label属性决定-->
+                <el-option label="上海" value="shanghai"></el-option>
+                <el-option label="北京" value="beijing"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="活动时间" required prop="date"><!--注意这里的required表示不为空-->
+            <!--日期选择器 value-format设置日期或者时间的格式-->
+            <el-date-picker type="date" placeholder="选择日期" v-model="formData.date"
+                value-format="yyyy-MM-dd"
+            ></el-date-picker>
+        </el-form-item>
+        <el-form-item  prop="time">
+            <!--时间选择器-->
+            <el-time-picker placeholder="选择时间"v-model="formData.time"
+                            value-format="HH:mm:ss"></el-time-picker>
+        </el-form-item>
+
+        <el-form-item label="即时配送" prop="switch">
+            <!--开关-->
+            <el-switch v-model="formData.switch"></el-switch>
+        </el-form-item>
+        <el-form-item label="活动性质" prop="type">
+            <!--复选框,注意对应的数据类型是数组-->
+            <!--应该用label来决定每个复选框显示的文字，而不是在标签内部写-->
+            <el-checkbox-group v-model="formData.type">
+                <el-checkbox label="美食/餐厅线上活动" value="1"></el-checkbox>
+                <el-checkbox label="地推活动" value="2"></el-checkbox>
+                <el-checkbox label="线下主题活动" value="3"></el-checkbox>
+                <el-checkbox label="单纯品牌曝光" value="4"></el-checkbox>
+            </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="活动来源" prop="resource">
+            <el-radio-group v-model="formData.resource">
+                <el-radio label="1">线上品牌商赞助</el-radio>
+                <el-radio label="2">线下场地免费</el-radio>
+                <el-radio label="3">线下场地自费</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item label="活动介绍" prop="introduce">
+            <el-input type="textarea" placeholder="请输入活动介绍" v-model="formData.introduce"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submit('activityForm')">立即创建</el-button>
+            <el-button @click="resetForm('activityForm')">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+
+<!--注意引入顺序-->
+<!--引入vue-->
+<script src="../js/vue.js"></script>
+<!-- 引入ElementUI组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            dialogFormVisible:false,
+            formData: {
+                name: "",
+                area: "",
+                date: new Date(),
+                time: new Date(),
+                switch: false,
+                type: [],
+                resource: "",
+                introduce: "",
+
+            },
+            rules: {
+                name: [
+                    {required: true, message: '请输入活动名称', trigger: 'blur'},
+                    {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                ],
+                area: [
+                    { required: true, message: '请选择活动区域', trigger: 'change' }
+                ],
+                date: [
+                    { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                ],
+                time: [
+                    { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+                ],
+                type: [
+                    { type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }
+                ],
+                resource: [
+                    { required: true, message: '请选择活动资源', trigger: 'change' }
+                ],
+                introduce: [
+                    { required: true, message: '请填写活动介绍', trigger: 'blur' }
+                ]
+            }
+        },
+        methods:{
+            submit:function (formName) {
+                // console.log(this.formData);
+                //console.log(JSON.stringify(this.formData));
+
+                //对表单进行校验
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert("校验成功，提交数据");
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            //重置表单函数
+            resetForm:function (formName){
+                this.$refs[formName].resetFields();
+            }
+        }
+    })
+</script>
+</body>
+</html>

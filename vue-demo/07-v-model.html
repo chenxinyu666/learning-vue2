@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-for</title>
+</head>
+<body>
+<div id="app">
+
+    <label>用户名：</label>
+    <input type="text" v-model="user.username">
+    <input type="text" v-model.lazy="user.username">
+    <button @click="showUsername">按钮</button>
+    <hr>
+    <!--单个复选框，v-model只绑定布尔类型的值，即复选框是否被选中-->
+    <input type="checkbox" v-model="user.state">
+    <span>{{user.state}}</span>
+     <hr>
+    <!--多个复选框，v-model绑定数组，选中的元素添加到数组中-->
+    <div>
+        <label>爱好：</label>
+        <input type="checkbox" v-model="user.hobbies" value="游泳"><label>游泳</label>
+        <input type="checkbox" v-model="user.hobbies" value="跑步"><label>跑步</label>
+        <input type="checkbox" v-model="user.hobbies" value="读书"><label>读书</label>
+        <div v-for="hobby in user.hobbies">
+            <span>{{hobby}}</span><br>
+        </div>
+    </div>
+    <!--v-model用于下拉列表，下拉列表最终选中的对应的value会绑定到对应的属性上-->
+    <select v-model="user.cityId">
+        <option v-for="city in cities" v-bind:value="city.id">
+            {{city.name}}
+        </option>
+    </select>
+    <br>
+    <span>城市id：{{user.cityId}}</span>
+</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            user:{
+                username: 'admin',
+                state: true,
+                hobbies:[],
+                cityId:""
+            },
+            cities:[
+                {
+                    id : 1,
+                    name: "London"
+                },
+                {
+                    id : 2,
+                    name: "Beijing"
+                },
+                {
+                    id : 3,
+                    name: "New York"
+                },
+            ]
+        },
+        methods:{
+            showUsername:function () {
+                alert(this.user.username);
+            },
+        }
+
+    })
+</script>
+</html>

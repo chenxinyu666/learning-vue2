@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>template</title>
+</head>
+<body>
+<div id="app">
+    <!--看源代码，并没有<template>标签-->
+    <template v-if="show">
+        <h1>Hello</h1>
+    </template>
+    <input type="text" v-model="num">
+    <select v-model="option">
+        <!--实现了当num<=3的时候显示前三个,num>3的时候显示后三个-->
+        <template v-if="num<=3">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </template>
+        <template v-if="num>3">
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        </template>
+    </select>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            show:true,
+            option:'',
+            num:3
+        },
+    })
+</script>
+</body>
+</html>

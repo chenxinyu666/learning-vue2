@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-for</title>
+</head>
+<body>
+<div id="app">
+    <!--遍历number-->
+    <span v-for="num in 10">{{num}} </span>
+    <br>
+    <!--遍历string-->
+    <span v-for="(char,index) in 'ABCDEFG'">{{index}}: {{char}} </span>
+    <br>
+    <!--遍历array-->
+    <ul>
+        <li v-for="item in arr">{{item}}</li>
+    </ul>
+    <hr>
+    <!--遍历object-->
+    <ul>
+        <li v-for="item in user">{{item}}</li>
+    </ul>
+    <br>
+
+    <!--遍历object数组-->
+    <span v-for="obj in userList">
+        <!--遍历每个对象的属性-->
+        <span v-for="(value,key,index) in obj">{{index}}--{{key}}: {{value}} <br></span>
+        <hr>
+    </span>
+
+</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            arr:['JAVA','C++','PHP'],
+            user:{
+                name:"admin",
+                mobile:'13584569957'
+            },
+            userList:[
+                {name:"张三", mobile:'13333333333'},
+                {name:"LISI",email:'tyo@idea.edu.cn'}
+            ]
+        },
+    })
+</script>
+</html>

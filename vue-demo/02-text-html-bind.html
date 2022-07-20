@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>v-text，v-html，v-bind</title>
+</head>
+<body>
+<div id="app">
+    <div v-text="author"></div>
+    <div v-text="works"></div>
+    <!--以纯文本显示到标签内部-->
+    <div v-text="message"></div>
+    <!--以HTML显示到标签内部-->
+    <div v-html="message"></div>
+    <!--通过v-bind:属性="Vue对象中属性"给标签的属性赋值-->
+    <a v-bind:href="url">{{content}}</a>
+    <!--测试按钮的disabled属性在什么情况下不渲染-->
+    <!--
+        1.false   2.null   3.undefined
+    -->
+    <button v-bind:disabled="disabled">按钮</button>
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app', //当前Vue对象作用于哪个DOM对象
+        data: {
+            author: '尤雨溪',
+            works:'vue',
+            message:'<h1>HELLO VUE</h1>',
+            url: "http://www.baidu.com",
+            content: "百度",
+            disabled: 0
+        },
+    })
+</script>
+</body>
+</html>

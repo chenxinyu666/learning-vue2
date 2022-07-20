@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--条件渲染-->
+    <title>v-if和v-show</title>
+</head>
+<body>
+<div id="app">
+    <!--v-model双向绑定数据-->
+    请输入年龄：<input v-model:value="age"/>
+    <div>当前年龄为：{{age}}</div>
+    <div v-if="age<18">未成年</div>
+    <div v-else-if="age<40">青年</div>
+    <div v-else-if="age<60">中年</div>
+    <div v-else-if="age>=60">老年</div>
+    <div v-else>输入错误</div>
+    <div v-show="age>=18">已成年</div>
+</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+           age: null
+        },
+    })
+</script>
+</html>

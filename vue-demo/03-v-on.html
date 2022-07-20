@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>v-on</title>
+</head>
+<body>
+<div id="app">
+    <button v-on:click="count ++">按钮1</button>
+    <button @click="funCount" v-bind:disabled="disabled">按钮2</button>
+    点击次数：{{count}}
+    <br>
+    <input type="button" value="打招呼" @click='sayHi("Jack")' />Hi~{{name}}
+</div>
+<script src="../js/vue.js"></script>
+<script>
+    new Vue({
+        el: '#app', //当前Vue对象作用于哪个DOM对象
+        data: {
+            count: 0,
+            disabled: false,
+            name:''
+        },
+        methods:{
+            funCount:function (){
+                if(this.count>=10){
+                    this.disabled = true
+                    return
+                }else{
+                    this.count++;
+                }
+            },
+            sayHi:function (name){
+                this.name = name;
+            }
+        }
+    })
+</script>
+</body>
+</html>

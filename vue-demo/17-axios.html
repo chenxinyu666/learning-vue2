@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>对话框</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<div id="msg"></div>
+
+<!--引入axios-->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    //处理get请求,
+    axios.get('../data/form-data.json',{
+        params:{
+            param1: 1,
+            param2: "2",
+        }
+    }).then(function (response) {
+            //从响应对象中获取数据
+            let data = response.data;
+            document.getElementById("msg").innerHTML = data.datetime;
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    //处理post请求
+    axios.post('/user',
+        //请求data
+        {
+            firstName: 'Fred',
+            lastName: 'Flintstone'
+        },
+        //
+    ).then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+</script>
+</body>
+</html>
